@@ -20,12 +20,6 @@ finishy = 0
 class Rwindow:
 	def __init__(self):
 		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-		#self.window = gtk.gdk.Window(self.get_parent_window(),
-                #                 width=self.allocation.width,
-                #                 height=self.allocation.height,
-                #                 window_type=gdk.WINDOW_CHILD,
-                #                 wclass=gdk.INPUT_OUTPUT,
-                #                 event_mask=self.get_events() | gdk.EXPOSURE_MASK)
 
 		self.window.set_decorated(False)
 		self.window.set_default_size(200, 200)
