@@ -17,13 +17,20 @@ class Rwindow:
     starty = 0
     finishx = 0
     finishy = 0
+    wNum = 8
+    hNum = 8
+    windowSize = 400
+    windowBoxSize = 30
+    windowSpacesize = 40
+    margin = 15
+
 
     def init(self):
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
 
         self.window.set_decorated(False)
-        self.window.set_default_size(200, 200)
-        self.window.set_size_request(200, 200)
+        self.window.set_default_size(self.windowSize,self.windowSize)
+        self.window.set_size_request(self.windowSize, self.windowSize)
         self.window.set_resizable(False)
         self.window.set_position(gtk.WIN_POS_CENTER)
         self.window.set_property("skip-taskbar-hint", True)
@@ -49,11 +56,11 @@ class Rwindow:
         self.window.show_all()
         self.window.present()
 
-        self.mouse = 0
+        self.mouse = False
 
         self.start = True
-        self.carryx = -20
-        self.carryy = -20
+        self.mousePoseX = -self.windowBoxSize
+        self.mousePoseY = -self.windowBoxSize
 
     def redraw(self):
         self.dwidget.queue_draw()
@@ -64,42 +71,42 @@ class Rwindow:
         self.cr = widget.window.cairo_create()
 
         self.cr.set_source_rgb(1, 1, 1)
-        self.cr.rectangle(0, 0, 200, 200)
+        self.cr.rectangle(0, 0, self.windowSize, self.windowSize)
         self.cr.fill()
 
-        for i in xrange(0, 6):
-            for j in xrange(0, 6):
+        for i in xrange(0, self.wNum):
+            for j in xrange(0, self.hNum):
 
                 self.cr.set_source_rgb(0.6, 0.6, 0.6)
-                self.cr.rectangle((30 * i) + 15, (30 * j) + 15, 20, 20)
+                self.cr.rectangle((self.windowSpacesize * i) + self.windowSpacesize, (self.windowSpacesize * j) + self.windowSpacesize, self.windowBoxSize, self.windowBoxSize)
                 self.cr.fill()
 
-        if self.start == False:
-            if self.mouse == 0:
-                if (((self.carryx - 15) % 30) < 20) and self.carryx < 180:
+        if not self.start:
+            if not self.mouse:
+                if (((self.mousePoseX - self.windowSpacesize) % self.windowSpacesize) < self.windowBoxSize) and self.mousePoseX < self.windowSize - self.margin:
             
-                    if (((self.carryy - 15) % 30) < 20) and self.carryy < 180:
+                    if (((self.mousePoseY - self.windowSpacesize) % self.windowSpacesize) < self.windowBoxSize) and self.mousePoseY < self.hNum - self.margin:
 
                         self.cr.set_source_rgb(0.3, 0.3, 0.3)
-                        self.cr.rectangle(self.carryx - ((self.carryx - 15) % 30), self.carryy - ((self.carryy - 15) % 30), 20, 20)
+                        self.cr.rectangle(self.mousePoseX - ((self.mousePoseX - self.windowSpacesize) % self.windowSpacesize), self.mousePoseY - ((self.mousePoseY - self.windowSpacesize) % self.windowSpacesize), self.windowBoxSize, self.windowBoxSize)
                         self.cr.fill()
             else:
-                mposx = ((self.carryx - ((self.carryx - 15) % 30)) - 15) / 30
-                mposy = ((self.carryy - ((self.carryy - 15) % 30)) - 15) / 30
+                mposx = ((self.mousePoseX - ((self.mousePoseX - self.windowSpacesize) % self.windowSpacesize)) - self.windowSpacesize) / self.windowSpacesize
+                mposy = ((self.mousePoseY - ((self.mousePoseY - self.windowSpacesize) % self.windowSpacesize)) - self.windowSpacesize) / self.windowSpacesize
 
-                if mposx > 5:
-                    mposx = 5
-                if mposy > 5:
-                    mposy = 5
+                if mposx > self.wNum-1:
+                    mposx = self.wNum-1
+                if mposy > self.hNum-1:
+                    mposy = self.hNum-1
                 if mposx < 0:
                     mposx = 0
                 if mposy < 0:
                     mposy = 0
 
-                x1 = -20
-                x2 = -20
-                y1 = -20
-                y2 = -20
+                x1 = -self.windowBoxSize
+                x2 = -self.windowBoxSize
+                y1 = -self.windowBoxSize
+                y2 = -self.windowBoxSize
                                 
                 if self.startx < mposx:
                     x1 = self.startx
@@ -116,11 +123,10 @@ class Rwindow:
 
                 difx = (x2 - x1) + 1
                 dify = (y2 - y1) + 1
-
                 for i in xrange(0, int(difx)):
                     for j in xrange(0, int(dify)):
                         self.cr.set_source_rgb(0.3, 0.3, 0.3)
-                        self.cr.rectangle((i * 30) + 15 + (30*x1), (j * 30) + 15 + (30*y1), 20, 20)
+                        self.cr.rectangle((i * self.windowSpacesize) + self.windowSpacesize + (self.windowSpacesize*x1), (j * self.windowSpacesize) + self.windowSpacesize + (self.windowSpacesize*y1), self.windowBoxSize, self.windowBoxSize)
                         self.cr.fill()
                 
         else:
@@ -134,8 +140,8 @@ class Rwindow:
             y = event.y
             state = event.state
 
-        self.carryx = x
-        self.carryy =y
+        self.mousePoseX = x
+        self.mousePoseY =y
 
         self.redraw()
 
@@ -148,28 +154,25 @@ class Rwindow:
         y = event.y
 
     
-        if (((x - 15) % 30) < 20) and x < 180:
+        if (((x - self.windowSpacesize) % self.windowSpacesize) < self.windowBoxSize) and x < self.windowSize-self.margin:
             
-            if (((y - 15) % 30) < 20) and y < 180:
+            if (((y - self.windowSpacesize) % self.windowSpacesize) < self.windowBoxSize) and y < self.windowSize-self.margin:
 
-                self.mouse = 1
-                self.startx = ((x - ((x - 15) % 30)) - 15) / 30
-                self.starty = ((y - ((y - 15) % 30)) - 15) / 30
-
-                print self.startx
-
+                self.mouse = True
+                self.startx = ((x - ((x - self.windowSpacesize) % self.windowSpacesize)) - self.windowSpacesize) / self.windowSpacesize
+                self.starty = ((y - ((y - self.windowSpacesize) % self.windowSpacesize)) - self.windowSpacesize) / self.windowSpacesize
 
     def cb_release(self, box, event, c=0):
         x = event.x
         y = event.y
 
-        self.finishx = ((x - ((x - 15) % 30)) - 15) / 30
-        self.finishy = ((y - ((y - 15) % 30)) - 15) / 30
+        self.finishx = ((x - ((x - self.windowSpacesize) % self.windowSpacesize)) - self.windowSpacesize) / self.windowSpacesize
+        self.finishy = ((y - ((y - self.windowSpacesize) % self.windowSpacesize)) - self.windowSpacesize) / self.windowSpacesize
 
-        if self.finishx == 6:
-            self.finishx = 5
-        if self.finishy == 6:
-            self.finishy = 5
+        if self.finishx == self.wNum:
+            self.finishx = self.wNum-1
+        if self.finishy == self.hNum:
+            self.finishy = self.hNum-1
 
         if self.finishx == -1:
             self.finishx = 0
@@ -215,7 +218,7 @@ class Rwindow:
         difx = (self.finishx - self.startx) + 1
         dify = (self.finishy - self.starty) + 1
 
-        self.ewmh.setMoveResizeWindow(win, grav, int(self.currentmonitoroffset + ((self.monitors[self.currentmonitor][0] - 45) / 6 * self.startx)) + 45, int((self.monitors[self.currentmonitor][1] - 24) / 6 * self.starty) + 24, int(self.monitors[self.currentmonitor][0] / 6 * difx), int(self.monitors[self.currentmonitor][1] / 6 * dify))
+        self.ewmh.setMoveResizeWindow(win, grav, int(self.currentmonitoroffset + ((self.monitors[self.currentmonitor][0] - 45) / self.wNum * self.startx)) + 45, int((self.monitors[self.currentmonitor][1] - 24) / self.hNum * self.starty) + 24, int(self.monitors[self.currentmonitor][0] / self.wNum * difx), int(self.monitors[self.currentmonitor][1] / self.hNum * dify))
 
         self.ewmh.display.flush()
 
