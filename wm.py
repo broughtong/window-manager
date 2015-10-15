@@ -208,8 +208,11 @@ class Rwindow:
 
     def cb(self,e):
         self.getDesktopDimensions()
+        win = None
         win = self.ewmh.getActiveWindow()
-
+        # If the window is the Desktop
+        if win == self.ewmh.getClientListStacking()[0]:
+            return
         self.init()
         gtk.main()
 
