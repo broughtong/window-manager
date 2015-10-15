@@ -23,6 +23,7 @@ class Rwindow:
     windowBoxSize = 30
     windowSpacesize = 40
     margin = 15
+    windowOpen = False
 
 
     def init(self):
@@ -147,7 +148,8 @@ class Rwindow:
 
     def cb_delete(self, widget, event=0, data=0):
         gtk.main_quit()
-        self.window.destroy()       
+        self.window.destroy()
+        self.windowOpen = False      
 
     def cb_press(self, box, event, c=0):
         x = event.x
@@ -207,9 +209,15 @@ class Rwindow:
                 self.currentmonitoroffset += self.monitors[i][0]
 
     def cb(self,e):
+        if self.windowOpen:
+            return
+        self.windowOpen = True
         self.getDesktopDimensions()
+        win = None
         win = self.ewmh.getActiveWindow()
-
+        # If the window is the Desktop
+        if win == self.ewmh.getClientListStacking()[0]:
+            return
         self.init()
         gtk.main()
 
