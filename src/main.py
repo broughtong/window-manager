@@ -1,14 +1,11 @@
 import os
-from systemtray import *
+from daemon import *
 
 if __name__ == "__main__":
 
 	if os.geteuid() != 0:
 
-		systemTray = wn_system_tray()
-
-		if systemTray.tray != None:
-			gtk.main()
+		daemon = wn_daemon()
 
 	else:
 
