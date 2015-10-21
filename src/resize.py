@@ -203,13 +203,8 @@ class wn_resize():
 		width = int(((x2 + 1) - x1) * (screenDimensions[0]) / self.nBoxesW)
 		height = int(((y2 + 1) - y1) * (screenDimensions[1]) / self.nBoxesH)
 
-		self.ewmh.setWmState(self.activeWindow, 1, '_NET_WM_ACTION_MAXIMIZE_VERT')
-		self.ewmh.setWmState(self.activeWindow, 0, '_NET_WM_ACTION_MAXIMIZE_HORZ')
-
-		if xPos == 0:
-			self.ewmh.setWmState(self.activeWindow, 0, '_NET_WM_ACTION_MAXIMIZE_HORZ')
-		if yPos == 0:
-			self.ewmh.setWmState(self.activeWindow, 0, '_NET_WM_ACTION_MAXIMIZE_VERT')
+		self.ewmh.setWmState(self.activeWindow, 0, '_NET_WM_STATE_MAXIMIZED_HORZ')
+		self.ewmh.setWmState(self.activeWindow, 0, '_NET_WM_STATE_MAXIMIZED_VERT')
 
 		self.ewmh.setMoveResizeWindow(self.activeWindow, grav, self.offset + xPos, yPos, width, height)
 		self.ewmh.display.flush()
