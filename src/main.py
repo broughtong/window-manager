@@ -3,10 +3,10 @@ from daemon import *
 
 if __name__ == "__main__":
 
-	if os.geteuid() != 0:
+    if os.geteuid() != 0:
 
-		daemon = wn_daemon()
+        daemon = wn_daemon()
 
-	else:
+    else:
 
-		print "Script must NOT be run as root"
+        print "Script must NOT be run as root"

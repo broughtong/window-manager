@@ -1,11 +1,11 @@
+#/usr/bin/python
 import gtk
 import pygtk
 import keybinder
 from ewmh import EWMH
-#from Xlib import 
 import cairo
 
-keystring = "<Ctrl>F1"
+keystring = "<Ctrl>space"
 
 class Rwindow:
 
@@ -95,14 +95,10 @@ class Rwindow:
                 mposx = ((self.mousePoseX - ((self.mousePoseX - self.windowSpacesize) % self.windowSpacesize)) - self.windowSpacesize) / self.windowSpacesize
                 mposy = ((self.mousePoseY - ((self.mousePoseY - self.windowSpacesize) % self.windowSpacesize)) - self.windowSpacesize) / self.windowSpacesize
 
-                if mposx > self.wNum-1:
-                    mposx = self.wNum-1
-                if mposy > self.hNum-1:
-                    mposy = self.hNum-1
-                if mposx < 0:
-                    mposx = 0
-                if mposy < 0:
-                    mposy = 0
+                if mposx > self.wNum-1: mposx = self.wNum-1
+                if mposy > self.hNum-1: mposy = self.hNum-1
+                if mposx < 0: mposx = 0
+                if mposy < 0: mposy = 0
 
                 x1 = -self.windowBoxSize
                 x2 = -self.windowBoxSize
@@ -171,15 +167,11 @@ class Rwindow:
         self.finishx = ((x - ((x - self.windowSpacesize) % self.windowSpacesize)) - self.windowSpacesize) / self.windowSpacesize
         self.finishy = ((y - ((y - self.windowSpacesize) % self.windowSpacesize)) - self.windowSpacesize) / self.windowSpacesize
 
-        if self.finishx == self.wNum:
-            self.finishx = self.wNum-1
-        if self.finishy == self.hNum:
-            self.finishy = self.hNum-1
+        if self.finishx == self.wNum: self.finishx = self.wNum-1
+        if self.finishy == self.hNum: self.finishy = self.hNum-1
 
-        if self.finishx == -1:
-            self.finishx = 0
-        if self.finishy == -1:
-            self.finishy = 0
+        if self.finishx == -1: self.finishx = 0
+        if self.finishy == -1: self.finishy = 0
 
 
         if self.startx > self.finishx:
@@ -216,8 +208,7 @@ class Rwindow:
         win = None
         win = self.ewmh.getActiveWindow()
         # If the window is the Desktop
-        if win == self.ewmh.getClientListStacking()[0]:
-            return
+        if win == self.ewmh.getClientListStacking()[0]: return
         self.init()
         gtk.main()
 
