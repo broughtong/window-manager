@@ -8,7 +8,7 @@ class wn_daemon():
 
     def __init__(self):
 
-        self.keystring = "<Ctrl><Shift>"
+        self.keystring = "<Ctrl>F4"
         self.bind()
 
         self.window = None
