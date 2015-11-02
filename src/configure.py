@@ -1,4 +1,4 @@
 class wn_configure():
-	def __init__(self):
+    def __init__(self):
 
-		pass
+        pass
