@@ -13,7 +13,7 @@ class wn_system_tray():
         self.configureOpen = False
         self.daemon = None
 
-        logoLocation = "/home/george/Desktop/wm/wm/logo.png"
+        logoLocation = "logo.png"
         systemTrayName = "Window Manager"
 
         try:
