@@ -119,6 +119,6 @@ class wn_system_tray():
                 Alert.show()
             else:
                 print "Error starting pynotify"
-            except:
+        except:
             print "pynotify not installed"
 

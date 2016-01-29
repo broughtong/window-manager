@@ -116,7 +116,7 @@ class wn_resize():
                 for j in xrange(int(y1), int(y2) + 1):
                     self.cr.set_source_rgb(0.3, 0.3, 0.3)
                     self.cr.rectangle((i * self.windowSpaceSizeW) + self.margin, (j * self.windowSpaceSizeH) + self.margin, self.windowBoxSizeW, self.windowBoxSizeH)
-                        self.cr.fill()
+                    self.cr.fill()
     def redraw(self):
 
         self.cairoWidget.queue_draw()
